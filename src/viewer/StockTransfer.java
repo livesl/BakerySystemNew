@@ -6,10 +6,16 @@ package viewer;
 
 import com.CalMaster;
 import com.Messages;
+import com.userstatus;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import model.db;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -58,6 +64,8 @@ public class StockTransfer extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txt_Qty = new javax.swing.JTextField();
         btn_Submit = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lbl_RemQty = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Stock Transfer..");
@@ -90,7 +98,7 @@ public class StockTransfer extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmb_Department, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(date_StockTrance, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -126,11 +134,16 @@ public class StockTransfer extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbl_StockTranc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbl_StockTrancKeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(tbl_StockTranc);
@@ -162,9 +175,17 @@ public class StockTransfer extends javax.swing.JFrame {
 
         jLabel7.setText("Batch ID");
 
+        cmb_BatchID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_BatchIDActionPerformed(evt);
+            }
+        });
         cmb_BatchID.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 cmb_BatchIDKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cmb_BatchIDKeyReleased(evt);
             }
         });
 
@@ -192,6 +213,9 @@ public class StockTransfer extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_QtyKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_QtyKeyReleased(evt);
+            }
         });
 
         btn_Submit.setText("Submit");
@@ -200,6 +224,11 @@ public class StockTransfer extends javax.swing.JFrame {
                 btn_SubmitActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Rem.Qty");
+
+        lbl_RemQty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_RemQty.setText("0.0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -221,20 +250,22 @@ public class StockTransfer extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txt_SellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel10))
-                    .addComponent(txt_ItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txt_ItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
                         .addComponent(cmb_BatchID, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txt_SellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_Qty, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_Qty, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_RemQty, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(btn_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
         );
@@ -258,7 +289,9 @@ public class StockTransfer extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(txt_SellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
-                            .addComponent(txt_Qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txt_Qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(lbl_RemQty)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(btn_Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -271,11 +304,11 @@ public class StockTransfer extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,9 +326,7 @@ public class StockTransfer extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,100 +341,154 @@ public class StockTransfer extends javax.swing.JFrame {
         if (evt.getKeyCode() == 10) {
             if (cmb_Department.getSelectedIndex() != 0) {
                 txt_ItemID.grabFocus();
-
+                
             }
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_cmb_DepartmentKeyPressed
-
+    
     private void txt_ItemNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ItemNameKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!txt_ItemName.getText().isEmpty()) {
-                cmb_Department.grabFocus();
-
+                
+                SetBatchesFromName();
+                
             }
-        }  // TODO add your handling code here:
+        } else if (evt.getKeyCode() == 113) {
+            if (!txt_Total.getText().isEmpty() && !txt_Total.getText().equals("0.0")) {
+                btn_Submit.grabFocus();
+            }
+        }    // TODO add your handling code here:
     }//GEN-LAST:event_txt_ItemNameKeyPressed
-
+    
     private void cmb_BatchIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_BatchIDKeyPressed
         if (evt.getKeyCode() == 10) {
             if (cmb_BatchID.getSelectedIndex() != -1) {
                 SetPrices();
                 txt_CostPrice.grabFocus();
+                txt_CostPrice.selectAll();
             }
-
-
+            
+            
         }        // TODO add your handling code here:
     }//GEN-LAST:event_cmb_BatchIDKeyPressed
-
+    
     private void txt_ItemIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ItemIDKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!txt_ItemID.getText().isEmpty()) {
-                cmb_Department.grabFocus();
-
+                SetBatchesFromID();
             }
-        }   // TODO add your handling code here:
+        } else if (evt.getKeyCode() == 113) {
+            if (!txt_Total.getText().isEmpty() && !txt_Total.getText().equals("0.0")) {
+                btn_Submit.grabFocus();
+            }
+        }  // TODO add your handling code here:
     }//GEN-LAST:event_txt_ItemIDKeyPressed
-
+    
     private void txt_CostPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_CostPriceKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!txt_CostPrice.getText().isEmpty()) {
                 txt_SellPrice.grabFocus();
-
+                txt_SellPrice.selectAll();
             }
         }  // TODO add your handling code here:
     }//GEN-LAST:event_txt_CostPriceKeyPressed
-
+    
     private void txt_SellPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_SellPriceKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!txt_SellPrice.getText().isEmpty()) {
                 txt_Qty.grabFocus();
-
+                
             }
         } // TODO add your handling code here:
     }//GEN-LAST:event_txt_SellPriceKeyPressed
-
+    
     private void txt_QtyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_QtyKeyPressed
         if (evt.getKeyCode() == 10) {
-            if (!txt_Qty.getText().isEmpty()) {
-
-                AddItemToTable();
-                txt_ItemID.grabFocus();
-
+            if (!txt_Qty.getText().isEmpty() && cmb_BatchID.getSelectedIndex() != -1) {
+                
+                double qty = Double.parseDouble(txt_Qty.getText());
+                double avqty = Double.parseDouble(lbl_RemQty.getText());
+                
+                if (qty > avqty) {
+                    Messages.warningjoption("Remaining Qty is Over ! Please Check !");
+                    txt_Qty.grabFocus();
+                    txt_Qty.selectAll();
+                } else {
+                    if (isItemAvailable()) {/// one stock transfer reg has only one batch item
+                        Messages.normaljoption("This item is already exist ! Please Check ! ");
+                    } else {
+                        
+                       
+                        
+                        AddItemToTable();
+                        txt_ItemID.grabFocus();
+                    }
+                }
+                
             }
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_QtyKeyPressed
-
+    
     private void btn_SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SubmitActionPerformed
         if (cmb_Department.getSelectedIndex() != 0 && date_StockTrance.getDate() != null && tbl_StockTranc.getRowCount() != 0) {
-
+            
             Save();
-
+            
         } else {
             Messages.fillemptydata();
             cmb_Department.grabFocus();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_SubmitActionPerformed
-
+    
     private void txt_ItemIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ItemIDKeyReleased
         if (!txt_ItemID.getText().isEmpty()) {
-            SetBatchesFromID();
+            //SetBatchesFromID();
         } else {
             ClearAll(0);
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_ItemIDKeyReleased
-
+    
     private void txt_ItemNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_ItemNameKeyReleased
         if (!txt_ItemName.getText().isEmpty()) {
-            SetBatchesFromName();
+            // SetBatchesFromName();
         } else {
-
+            
             ClearAll(0);
+            txt_ItemName.grabFocus();
         }// TODO add your handling code here:
     }//GEN-LAST:event_txt_ItemNameKeyReleased
+    
+    private void cmb_BatchIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_BatchIDActionPerformed
+        if (cmb_BatchID.getSelectedIndex() != -1) {
+            SetPrices();
+            
+        }
+    }//GEN-LAST:event_cmb_BatchIDActionPerformed
+    
+    private void tbl_StockTrancKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_StockTrancKeyPressed
+        if (tbl_StockTranc.getRowCount() != 0) {
+            if (evt.getKeyCode() == 127) {
+                DeleteTableItem();
+            }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_StockTrancKeyPressed
+    
+    private void txt_QtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_QtyKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_QtyKeyReleased
+    
+    private void cmb_BatchIDKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_BatchIDKeyReleased
+//        if (cmb_BatchID.getSelectedIndex() != -1) {
+//            SetPrices();
+//            txt_CostPrice.grabFocus();
+//        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_BatchIDKeyReleased
 
     /**
      * @param args the command line arguments
@@ -444,6 +529,7 @@ public class StockTransfer extends javax.swing.JFrame {
     private javax.swing.JComboBox cmb_BatchID;
     private javax.swing.JComboBox cmb_Department;
     private com.toedter.calendar.JDateChooser date_StockTrance;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -457,6 +543,7 @@ public class StockTransfer extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbl_RemQty;
     private javax.swing.JTable tbl_StockTranc;
     private javax.swing.JTextField txt_CostPrice;
     private javax.swing.JTextField txt_ItemID;
@@ -470,13 +557,14 @@ public class StockTransfer extends javax.swing.JFrame {
         LoadComboDepartment();
         System.out.println(GetID());
         date_StockTrance.setDate(new Date());
+        LoadItemName();
         cmb_Department.grabFocus();
     }
-
+    
     private void LoadComboDepartment() {
         DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmb_Department.getModel();
         dcbm.removeAllElements();
-
+        
         try {
             dcbm.addElement("--Select--");
             ResultSet rs = model.db.fetch("SELECT\n"
@@ -485,42 +573,42 @@ public class StockTransfer extends javax.swing.JFrame {
                     + "department\n"
                     + "WHERE\n"
                     + "department.`status` = '0'");
-
+            
             while (rs.next()) {
                 dcbm.addElement(rs.getString(1));
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     private String GetID() { // return next new id
         String id = "1";
         try {
             ResultSet rs = model.db.fetch("select max(id) from stock_transfer_reg");
-
+            
             if (rs.next()) {
-
+                
                 if (rs.getString(1) != null) {
                     int num = Integer.parseInt(rs.getString(1));
                     num++;
                     id = "" + num;
                 }
-
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return id;
     }
-
+    
     private void AddItemToTable() {
-
+        
         if (cmb_BatchID.getSelectedIndex() != -1 && !txt_CostPrice.getText().isEmpty() && !txt_SellPrice.getText().isEmpty() && !txt_Qty.getText().isEmpty()) {
             DefaultTableModel dtm = (DefaultTableModel) tbl_StockTranc.getModel();
-
+            
             int itemid = Integer.parseInt(txt_ItemID.getText());
             String name = txt_ItemName.getText();
             double cost = Double.parseDouble(txt_CostPrice.getText());
@@ -528,14 +616,14 @@ public class StockTransfer extends javax.swing.JFrame {
             double qty = Double.parseDouble(txt_Qty.getText());
             int btchid = Integer.parseInt(cmb_BatchID.getSelectedItem().toString());
             double total = Double.parseDouble("" + cost * qty);
-
+            
             Object arr[] = {itemid, name, btchid, cost, sell, qty, total};
             dtm.addRow(arr);
-
+            
             double amounttot = 0.0; // get amout of table content
 
             for (int i = 0; i < tbl_StockTranc.getRowCount(); i++) {
-
+                
                 amounttot += Double.parseDouble(tbl_StockTranc.getValueAt(i, 6).toString());
                 txt_Total.setText("" + amounttot);
             }
@@ -545,101 +633,233 @@ public class StockTransfer extends javax.swing.JFrame {
         ClearAll(0);
         txt_ItemID.grabFocus();
     }
-
+    
     private void ClearAll(int i) {
-
-        if (i == 1) { // only 1
+        
+        if (i == 1) { // only 1 for all
             LoadComboDepartment();
-            txt_Total.setText(null);
+            LoadItemName();
+            DefaultTableModel dtm = (DefaultTableModel) tbl_StockTranc.getModel();
+            dtm.setRowCount(0);
+            txt_Total.setText("0.0");
             date_StockTrance.setDate(new Date());
         }
         txt_ItemID.setText(null);
         txt_ItemName.setText(null);
-        txt_CostPrice.setText(null);
-        txt_SellPrice.setText(null);
+        txt_CostPrice.setText("0.0");
+        txt_SellPrice.setText("0.0");
+        lbl_RemQty.setText("0.0");
         cmb_BatchID.removeAllItems();
         txt_Qty.setText(null);
-
-
+        
+        
     }
-
+    
     private void Save() {
+        
+        String stocktrancid = GetID();
+        
+        
+        int department_id = 0;
+        try {
+            ResultSet rs = model.db.fetch("select * from  department where name='" + cmb_Department.getSelectedItem() + "' and status='0' ");
+            if (rs.next()) {
+                
+                department_id = Integer.parseInt(rs.getString(1));
+                // System.out.println(supplier_id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //  System.out.println(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(.getDate()));
+        try {
+            
+            
+            
+            db.change("insert into stock_transfer_reg(id,date,total,user_name,department_id) "
+                    + "values('" + stocktrancid.trim() + "','" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date_StockTrance.getDate()) + "'," + txt_Total.getText().trim() + ",'" + userstatus.LodUser.trim() + "','" + department_id + "')");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        try {
+            
+            for (int i = 0; i < tbl_StockTranc.getRowCount(); i++) {
+                
+                
+                double cost = Double.parseDouble(tbl_StockTranc.getValueAt(i, 3).toString());
+                double sell = Double.parseDouble(tbl_StockTranc.getValueAt(i, 4).toString());
+                double qty = Double.parseDouble(tbl_StockTranc.getValueAt(i, 5).toString());
+                int batch = Integer.parseInt(tbl_StockTranc.getValueAt(i, 2).toString());
+                
+                int itemid = Integer.parseInt(tbl_StockTranc.getValueAt(i, 0).toString());
+                
+                
+                
+                db.change("insert into stock_transfer(cost,sell,qty,stock_transfer_reg_id,batch_item_id,batch_item_grn_items_id) "
+                        + "values('" + cost + "','" + sell + "','" + qty + "','" + stocktrancid + "','" + batch + "','" + itemid + "')");
 
-        String id = GetID();
-
-
-
-
+                // batch item update reduce rem qty
+                db.change("Update batch_item set  rem_qty=rem_qty-'" + qty + "' where id='" + batch + "'");
+                
+                
+            }
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        Messages.datasaved();
+        ClearAll(1);
+        
+        
+        
     }
-
+    
     private void SetBatchesFromID() {
         try {
             DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmb_BatchID.getModel();
             dcbm.removeAllElements();
-
-
+            
+            
             ResultSet rs = model.db.fetch("SELECT\n"
-                    + "batch_item.id\n"
-                    + "FROM\n"
-                    + "batch_item\n"
-                    + "WHERE\n"
-                    + "batch_item.rem_qty > '0' AND\n"
-                    + "batch_item.grn_items_id = '" + txt_ItemID.getText().trim() + "'");
-
-            while (rs.next()) {
-                dcbm.addElement(rs.getString(1));
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void SetBatchesFromName() {
-        try {
-
-            DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmb_BatchID.getModel();
-            dcbm.removeAllElements();
-
-
-            ResultSet rs = model.db.fetch("SELECT\n"
-                    + "batch_item.id\n"
+                    + "batch_item.id,\n"
+                    + "items.`name`\n"
                     + "FROM\n"
                     + "batch_item ,\n"
                     + "items\n"
                     + "WHERE\n"
                     + "batch_item.grn_items_id = items.id AND\n"
-                    + "items.`name` = '"+txt_ItemName.getText().trim()+"' AND\n"
-                    + "batch_item.rem_qty > '0'");
-
+                    + "batch_item.rem_qty > 0 AND\n"
+                    + "batch_item.grn_items_id = '" + txt_ItemID.getText() + "'");
+            
             while (rs.next()) {
                 dcbm.addElement(rs.getString(1));
-
+                txt_ItemName.setText(rs.getString(2));
             }
-
-
+            cmb_BatchID.grabFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    private void SetBatchesFromName() {
+        try {
+            
+            DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmb_BatchID.getModel();
+            dcbm.removeAllElements();
+            
+            
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "batch_item.id,\n"
+                    + "items.id\n"
+                    + "FROM\n"
+                    + "batch_item ,\n"
+                    + "items\n"
+                    + "WHERE\n"
+                    + "batch_item.grn_items_id = items.id AND\n"
+                    + "items.`name` = '" + txt_ItemName.getText() + "' AND\n"
+                    + "batch_item.rem_qty > 0");
+            
+            while (rs.next()) {
+                dcbm.addElement(rs.getString(1)); // batch id
+                txt_ItemID.setText(rs.getString(2)); // item id
+            }
+            cmb_BatchID.grabFocus();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     private void SetPrices() {
         try {
-
-
-
-            ResultSet rs = model.db.fetch("");
-
+            
+            
+            
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "grn.cost,\n"
+                    + "grn.sell,\n"
+                    + "batch_item.rem_qty\n"
+                    + "FROM\n"
+                    + "batch_item ,\n"
+                    + "grn\n"
+                    + "WHERE\n"
+                    + "batch_item.grn_raw = grn.raw AND\n"
+                    + "batch_item.id = '" + cmb_BatchID.getSelectedItem() + "'");
+            
             while (rs.next()) {
                 txt_CostPrice.setText(rs.getString(1));
-                txt_SellPrice.setText(rs.getString(1));
+                txt_SellPrice.setText(rs.getString(2));
+                lbl_RemQty.setText(rs.getString(3));
             }
-
-
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private void DeleteTableItem() {
+        DefaultTableModel tbl = (DefaultTableModel) tbl_StockTranc.getModel();
+        tbl.removeRow(tbl_StockTranc.getSelectedRow());
+        
+        double amounttot = 0.0;
+        
+        for (int i = 0; i < tbl_StockTranc.getRowCount(); i++) {
+            
+            amounttot += Double.parseDouble(tbl_StockTranc.getValueAt(i, 6).toString());
+            txt_Total.setText("" + amounttot);
+        }
+        
+        if (tbl_StockTranc.getRowCount() == 0) {
+            txt_Total.setText("0.0");
+        }
+        
+        txt_ItemID.grabFocus();
+        
+    }
+    
+    private void LoadItemName() {
+        
+        
+        List<String> li = new ArrayList<String>();
+        
+        try {
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "items.`name`\n"
+                    + "FROM\n"
+                    + "items\n"
+                    + "WHERE\n"
+                    + "items.`status` = '0'");
+            while (rs.next()) {
+                li.add(rs.getString(1));
+                
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        AutoCompleteDecorator.decorate(txt_ItemName, li, true);
+    }
+    
+    private boolean isItemAvailable() {
+        
+        boolean bol = false;
+        
+        String itemid = cmb_BatchID.getSelectedItem().toString();
+        
+        for (int i = 0; i < tbl_StockTranc.getRowCount(); i++) {
+            
+            String value = tbl_StockTranc.getValueAt(i, 2).toString();
+            if (itemid.equals(value)) {
+                bol = true;
+                break;
+            }
+        }
+        return bol;
     }
 }

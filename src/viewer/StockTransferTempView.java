@@ -5,6 +5,7 @@
 package viewer;
 
 import com.Messages;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,34 +35,118 @@ public class StockTransferTempView extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_GinPart2 = new javax.swing.JTable();
+        tbl_StockTrance = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        date_From = new com.toedter.calendar.JDateChooser();
+        jLabel11 = new javax.swing.JLabel();
+        date_To = new com.toedter.calendar.JDateChooser();
+        btn_Find = new javax.swing.JButton();
+        btn_Clear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Invoices");
+        setTitle("Stock Transfer View");
 
-        tbl_GinPart2.setBackground(new java.awt.Color(255, 204, 204));
-        tbl_GinPart2.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_StockTrance.setBackground(new java.awt.Color(255, 204, 204));
+        tbl_StockTrance.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Invoice No", "Date", "Cus Name", "Total"
+                "Stock Transfer No", "Date", "Department", "UserName", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tbl_GinPart2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_StockTrance.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_GinPart2MouseClicked(evt);
+                tbl_StockTranceMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tbl_GinPart2);
+        jScrollPane1.setViewportView(tbl_StockTrance);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        jLabel3.setText("From");
+
+        date_From.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                date_FromMouseClicked(evt);
+            }
+        });
+        date_From.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                date_FromPropertyChange(evt);
+            }
+        });
+
+        jLabel11.setText("To");
+
+        date_To.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                date_ToPropertyChange(evt);
+            }
+        });
+        date_To.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                date_ToKeyPressed(evt);
+            }
+        });
+
+        btn_Find.setText("Find");
+        btn_Find.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_FindActionPerformed(evt);
+            }
+        });
+
+        btn_Clear.setText("Clear");
+        btn_Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ClearActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel3)
+                .addGap(26, 26, 26)
+                .addComponent(date_From, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(jLabel11)
+                .addGap(18, 18, 18)
+                .addComponent(date_To, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addComponent(btn_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(btn_Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_Find)
+                        .addComponent(btn_Clear))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(date_From, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(date_To, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,31 +154,68 @@ public class StockTransferTempView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tbl_GinPart2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_GinPart2MouseClicked
-        if (tbl_GinPart2.getRowCount() != 0) {
-
+    private void tbl_StockTranceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_StockTranceMouseClicked
+        if (tbl_StockTrance.getRowCount() != 0) {
+            
             if (evt.getClickCount() == 2) {
-                int id=Integer.parseInt(tbl_GinPart2.getValueAt(tbl_GinPart2.getSelectedRow(), 0).toString());
-                new InvoiceReturn(id).setVisible(true);
-
+                int id = Integer.parseInt(tbl_StockTrance.getValueAt(tbl_StockTrance.getSelectedRow(), 0).toString());
+                new StockTransferReturn(id).setVisible(true);
+                
             }
         }
-    }//GEN-LAST:event_tbl_GinPart2MouseClicked
+    }//GEN-LAST:event_tbl_StockTranceMouseClicked
+    
+    private void date_FromMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_date_FromMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_date_FromMouseClicked
+    
+    private void date_FromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_date_FromPropertyChange
+//        if (date_From.getDate() != null && getSelectedIndex() == 3) {
+//            FindGrnAll();
+//        }
+    }//GEN-LAST:event_date_FromPropertyChange
+    
+    private void date_ToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_date_ToPropertyChange
+    }//GEN-LAST:event_date_ToPropertyChange
+    
+    private void date_ToKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_date_ToKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_date_ToKeyPressed
+    
+    private void btn_FindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FindActionPerformed
+        if (date_From.getDate() != null && date_To.getDate() != null) {
+            LoadTable();
+        } else {
+            Messages.warningjoption("Please Select Both Date ! ");
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_btn_FindActionPerformed
+    
+    private void btn_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ClearActionPerformed
+        if (tbl_StockTrance.getRowCount()!=0) {
+            ClearAll();
+        }
+         // TODO add your handling code here:
+    }//GEN-LAST:event_btn_ClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -106,7 +228,7 @@ public class StockTransferTempView extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -130,69 +252,126 @@ public class StockTransferTempView extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Clear;
+    private javax.swing.JButton btn_Find;
+    private com.toedter.calendar.JDateChooser date_From;
+    private com.toedter.calendar.JDateChooser date_To;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JTable tbl_GinPart2;
+    private static javax.swing.JTable tbl_StockTrance;
     // End of variables declaration//GEN-END:variables
 
     private void FirstLoad() {
-
-        LoadAllPendinghs();
-
+        
+        LoadAllToday();
+        
     }
-    String todaydate = "";
-
-    private void today() {
-        Date datenow = new Date();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        StringBuilder sb = new StringBuilder(sdf.format(datenow));
-        todaydate = datenow.toString();
-
-
-    }
-
-    public static void LoadAllPendinghs() {
-
+    
+    public static void LoadAllToday() {
+        
         try {
-            DefaultTableModel tb = (DefaultTableModel) tbl_GinPart2.getModel();
+            DefaultTableModel tb = (DefaultTableModel) tbl_StockTrance.getModel();
             tb.setRowCount(0);
-
-
+            
+            
             try {
-
+                
                 ResultSet rs = model.db.fetch("SELECT\n"
-                        + "ginreg.id,\n"
-                        + "ginreg.date,\n"
-                        + "customer.`name`,\n"
-                        + "ginreg.total\n"
+                        + "stock_transfer_reg.id,\n"
+                        + "stock_transfer_reg.date,\n"
+                        + "department.`name`,\n"
+                        + "`user`.`name`,\n"
+                        + "stock_transfer_reg.total\n"
                         + "FROM\n"
-                        + "ginreg ,\n"
-                        + "customer\n"
+                        + "stock_transfer_reg ,\n"
+                        + "department ,\n"
+                        + "`user`\n"
                         + "WHERE\n"
-                        + "ginreg.customer_id = customer.id AND\n"
-                        + "ginreg.`status` = '0'");
-
+                        + "stock_transfer_reg.department_id = department.id AND\n"
+                        + "stock_transfer_reg.user_name = `user`.`name` AND\n"
+                        + "stock_transfer_reg.date like '" + com.MyDateTimes.TodayDate() + "%'");
+                
                 while (rs.next()) {
-
+                    
                     String id = rs.getString(1);
                     Date date = rs.getDate(2);
-                    String total = rs.getString(3);
-                    String disc = rs.getString(4);
-
-
-                    Object arr[] = {id, date, total, disc};
+                    String depart = rs.getString(3);
+                    String username = rs.getString(4);
+                    String total = rs.getString(5);
+                    
+                    
+                    Object arr[] = {id, date, depart, username, total};
                     tb.addRow(arr);
                 }
-
-
+                
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
+            
+            tbl_StockTrance.setBackground(Color.PINK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
+    }
+    
+    private void LoadTable() {
+        try {
+            DefaultTableModel tb = (DefaultTableModel) tbl_StockTrance.getModel();
+            tb.setRowCount(0);
+            
+            
+            try {
+                
+                ResultSet rs = model.db.fetch("SELECT\n"
+                        + "stock_transfer_reg.id,\n"
+                        + "stock_transfer_reg.date,\n"
+                        + "department.`name`,\n"
+                        + "`user`.`name`,\n"
+                        + "stock_transfer_reg.total\n"
+                        + "FROM\n"
+                        + "stock_transfer_reg ,\n"
+                        + "department ,\n"
+                        + "`user`\n"
+                        + "WHERE\n"
+                        + "stock_transfer_reg.department_id = department.id AND\n"
+                        + "stock_transfer_reg.user_name = `user`.`name` AND\n"
+                        + "stock_transfer_reg.date  BETWEEN  '" + new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()) + "' and '" + new SimpleDateFormat("yyyy-MM-dd").format(date_To.getDate()) + "' ");
+                
+                while (rs.next()) {
+                    
+                    String id = rs.getString(1);
+                    Date date = rs.getDate(2);
+                    String depart = rs.getString(3);
+                    String username = rs.getString(4);
+                    String total = rs.getString(5);
+                    
+                    
+                    Object arr[] = {id, date, depart, username, total};
+                    tb.addRow(arr);
+                }
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            tbl_StockTrance.setBackground(Color.WHITE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    private void ClearAll() {
+        date_From.setDate(null);
+        date_To.setDate(null);
+        DefaultTableModel tb = (DefaultTableModel) tbl_StockTrance.getModel();
+        tb.setRowCount(0);
+        LoadAllToday();
+        
     }
 }

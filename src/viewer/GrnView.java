@@ -783,7 +783,7 @@ public class GrnView extends javax.swing.JFrame {
             dtm.setRowCount(0);
             if (date_From.getDate() != null && date_To.getDate() != null) {
 
-
+                //System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()));
 
                 try {
 
@@ -800,8 +800,8 @@ public class GrnView extends javax.swing.JFrame {
                             + "supplier\n"
                             + "WHERE\n"
                             + "grnreg.supplier_id = supplier.id  AND\n"
-                            + "grnreg.date BETWEEN '" + new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()) + "%' AND\n"
-                            + "'" + new SimpleDateFormat("yyyy-MM-dd").format(date_To.getDate()) + "%'");
+                            + "grnreg.date BETWEEN  '" + new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()) + "' AND\n"
+                            + " '" + new SimpleDateFormat("yyyy-MM-dd").format(date_To.getDate()) + "' ");
 
                     while (rs.next()) {
                         String id = rs.getString(1);
@@ -862,7 +862,7 @@ public class GrnView extends javax.swing.JFrame {
                             + "supplier\n"
                             + "WHERE\n"
                             + "grnreg.supplier_id = supplier.id AND\n"
-                            + "grnreg.date BETWEEN '" + new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()) + "%' AND '" + new SimpleDateFormat("yyyy-MM-dd").format(date_To.getDate()) + "%' AND\n"
+                            + "grnreg.date BETWEEN '" + new SimpleDateFormat("yyyy-MM-dd").format(date_From.getDate()) + "' AND '" + new SimpleDateFormat("yyyy-MM-dd").format(date_To.getDate()) + "' AND\n"
                             + "supplier.`name` = '" + cmb_Supplier.getSelectedItem() + "'");
 
                     while (rs.next()) {

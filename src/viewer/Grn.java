@@ -96,7 +96,7 @@ public class Grn extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -540,9 +540,9 @@ public class Grn extends javax.swing.JFrame {
 
             if (!txtItemId.getText().isEmpty() && !txtQty.getText().isEmpty() && !txtDiscount.getText().isEmpty()) {
 
-//                if (isItemAvailable()) {
-//                    JOptionPane.showMessageDialog(null, "This Item is Already Exist ! ");
-//                } else {
+//              if (isItemAvailable()) {
+////                    JOptionPane.showMessageDialog(null, "This Item is Already Exist ! ");
+////                } else {
                 if (!txtQty.getText().equals("0") && !txtQty.getText().equals("0.0")) {
                     addtable();
 
@@ -950,7 +950,7 @@ public class Grn extends javax.swing.JFrame {
 
             int supplier_id = 0;
             try {
-                ResultSet rs = model.db.fetch("select * from  supplier where name='" + cmbSupplirName.getSelectedItem() + "'");
+                ResultSet rs = model.db.fetch("select * from  supplier where name='" + cmbSupplirName.getSelectedItem() + "' and status='0'");
                 if (rs.next()) {
 
                     supplier_id = Integer.parseInt(rs.getString("id"));
@@ -982,18 +982,18 @@ public class Grn extends javax.swing.JFrame {
                     double discount = Double.parseDouble(tblGrn.getValueAt(i, 4).toString());
 
                     int itemid = Integer.parseInt(tblGrn.getValueAt(i, 0).toString());
-                    
-                    int rawid=Integer.parseInt(GetID()); // get grn raw value
+
+                    int rawid = Integer.parseInt(GetID()); // get grn raw value
                     System.out.println(GetID());
 
                     db.change("insert into grn(cost,sell,qty,doscount,grnreg_id,items_id,raw) "
-                            + "values('" + cost + "','" + sell + "','" + qty + "','" + discount + "','" + grn_id + "','" + itemid + "','"+rawid+"')");
-                    
-                    // batch item
-                     db.change("insert into batch_item(qty,rem_qty,grn_grnreg_id,grn_items_id,grn_raw) "
-                            + "values('" + qty + "','" + qty + "','" + grn_id + "','" + itemid + "','"+rawid+"')");
+                            + "values('" + cost + "','" + sell + "','" + qty + "','" + discount + "','" + grn_id + "','" + itemid + "','" + rawid + "')");
 
-                    
+                    // batch item
+                    db.change("insert into batch_item(qty,rem_qty,grn_grnreg_id,grn_items_id,grn_raw) "
+                            + "values('" + qty + "','" + qty + "','" + grn_id + "','" + itemid + "','" + rawid + "')");
+
+
                 }
 
 
@@ -1024,7 +1024,7 @@ public class Grn extends javax.swing.JFrame {
                     + "FROM\n"
                     + "grnreg\n"
                     + "WHERE\n"
-                    + "grnreg.id = '"+txtGrnId.getText()+"'");
+                    + "grnreg.id = '" + txtGrnId.getText() + "'");
             if (rs.next()) {
                 bol = false;
                 Messages.errorjoption("This GRN No Already Exist ! ");
@@ -1039,8 +1039,8 @@ public class Grn extends javax.swing.JFrame {
 
         return bol;
     }
-    
-     private String GetID() { // return next new id
+
+    private String GetID() { // return next new id
         String id = "1";
         try {
             ResultSet rs = model.db.fetch("select max(raw) from grn");

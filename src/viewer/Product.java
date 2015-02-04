@@ -25,6 +25,7 @@ public class Product extends javax.swing.JFrame {
         initComponents();
         txt_CostPrice.setText("0.0");
         txt_SellPrice.setText("0.0");
+        loadtable();
     }
 
     /**
@@ -128,6 +129,9 @@ public class Product extends javax.swing.JFrame {
         cmb_Status.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 cmb_StatusKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cmb_StatusKeyReleased(evt);
             }
         });
 
@@ -246,6 +250,7 @@ public class Product extends javax.swing.JFrame {
     private void txt_CostPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_CostPriceKeyPressed
         if (evt.getKeyCode() == 10) {
             txt_SellPrice.grabFocus();
+            txt_SellPrice.selectAll();
         }
     }//GEN-LAST:event_txt_CostPriceKeyPressed
 
@@ -271,6 +276,10 @@ public class Product extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         SaveAndUpdate();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmb_StatusKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmb_StatusKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmb_StatusKeyReleased
 
     /**
      * @param args the command line arguments
@@ -343,7 +352,7 @@ public class Product extends javax.swing.JFrame {
         if (txt_Id.getText().isEmpty()) {
 
             try {
-                db.change("insert into items(name,cost,sell,status) "
+                db.change("insert into product(name,cost,sell,status) "
                         + "value('" + txt_Name.getText() + "','" + txt_CostPrice.getText() + "','" + txt_SellPrice.getText() + "','" + Active + "')");
 
             } catch (Exception e) {
@@ -355,7 +364,7 @@ public class Product extends javax.swing.JFrame {
             loadtable();
         } else {
             try {
-                db.change("update  items set name= '" + txt_Name.getText() + "',"
+                db.change("update  product set name= '" + txt_Name.getText() + "',"
                         + "cost='" + txt_CostPrice.getText() + "',"
                         + "sell='" + txt_SellPrice.getText() + "',status='" + Active + "' "
                         + " where id='" + txt_Id.getText() + "'");

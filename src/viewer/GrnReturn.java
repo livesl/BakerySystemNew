@@ -25,6 +25,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  */
 public class GrnReturn extends javax.swing.JFrame {
 
+    int invoiceid = 0;
+
     /**
      * Creates new form grn
      */
@@ -32,6 +34,12 @@ public class GrnReturn extends javax.swing.JFrame {
         initComponents();
         FirstLoad();
 
+    }
+
+    public GrnReturn(int id) {
+        this.invoiceid = id;
+        initComponents();
+        FirstLoad();
     }
 
     /**
@@ -45,7 +53,6 @@ public class GrnReturn extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGrn = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -60,10 +67,12 @@ public class GrnReturn extends javax.swing.JFrame {
         txtDiscount = new javax.swing.JTextField();
         txtItemName = new javax.swing.JTextField();
         txtItemId = new javax.swing.JTextField();
-        cmbItemName = new javax.swing.JComboBox();
         txtQty = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         lblDis = new javax.swing.JLabel();
+        btnSubmit1 = new javax.swing.JButton();
+        lbl_RemQty = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
@@ -72,17 +81,24 @@ public class GrnReturn extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         txtGrandTotal = new javax.swing.JTextField();
         btnSubmit = new javax.swing.JButton();
+        btnSubmit2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        cmbSupplirName = new javax.swing.JComboBox();
+        lbl_Supplier = new javax.swing.JLabel();
+        lbl_Date = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblGrn1 = new javax.swing.JTable();
+        jLabel15 = new javax.swing.JLabel();
+        txt_GrandTot = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("GRN");
+        setTitle("GRN Return");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setText("Date");
 
+        tblGrn.setBackground(new java.awt.Color(153, 204, 255));
         tblGrn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -92,7 +108,7 @@ public class GrnReturn extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -108,6 +124,9 @@ public class GrnReturn extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tblGrnKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblGrnKeyReleased(evt);
+            }
         });
         jScrollPane1.setViewportView(tblGrn);
         tblGrn.getColumnModel().getColumn(4).setPreferredWidth(30);
@@ -121,6 +140,7 @@ public class GrnReturn extends javax.swing.JFrame {
 
         jLabel6.setText("Cost Price");
 
+        txtCostPrice.setEditable(false);
         txtCostPrice.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCostPriceKeyPressed(evt);
@@ -129,6 +149,7 @@ public class GrnReturn extends javax.swing.JFrame {
 
         jLabel7.setText("Selling Price");
 
+        txtSellingPrice.setEditable(false);
         txtSellingPrice.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtSellingPriceKeyPressed(evt);
@@ -154,6 +175,7 @@ public class GrnReturn extends javax.swing.JFrame {
             }
         });
 
+        txtItemName.setEditable(false);
         txtItemName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtItemNameActionPerformed(evt);
@@ -172,12 +194,6 @@ public class GrnReturn extends javax.swing.JFrame {
             }
         });
 
-        cmbItemName.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbItemNameItemStateChanged(evt);
-            }
-        });
-
         txtQty.setText("0.0");
         txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -190,47 +206,67 @@ public class GrnReturn extends javax.swing.JFrame {
         lblDis.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblDis.setText("0.0");
 
+        btnSubmit1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnSubmit1.setText("Clear");
+        btnSubmit1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmit1ActionPerformed(evt);
+            }
+        });
+        btnSubmit1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSubmit1KeyPressed(evt);
+            }
+        });
+
+        lbl_RemQty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_RemQty.setText("0.0");
+
+        jLabel14.setText("Rem.Qty");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtItemId, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addGap(21, 21, 21)
+                        .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCostPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtItemId, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addComponent(btnSubmit1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtSellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_RemQty, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
                         .addComponent(jLabel9)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblDis, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(30, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))))
+                        .addComponent(lblDis, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,22 +277,24 @@ public class GrnReturn extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(txtItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtItemId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(btnSubmit1)
+                    .addComponent(jLabel6)
+                    .addComponent(txtCostPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(txtCostPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7)
-                        .addComponent(txtSellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
                         .addComponent(jLabel9)
                         .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13)
-                        .addComponent(lblDis)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addComponent(lblDis))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)
+                        .addComponent(txtSellingPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel14)
+                        .addComponent(lbl_RemQty)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -297,6 +335,19 @@ public class GrnReturn extends javax.swing.JFrame {
             }
         });
 
+        btnSubmit2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnSubmit2.setText("Clear All");
+        btnSubmit2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmit2ActionPerformed(evt);
+            }
+        });
+        btnSubmit2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSubmit2KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -319,8 +370,10 @@ public class GrnReturn extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSubmit)
-                .addGap(65, 65, 65))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSubmit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSubmit2, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+                .addGap(48, 48, 48))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,59 +391,105 @@ public class GrnReturn extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(txtGrandTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
-                .addComponent(btnSubmit)
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnSubmit2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(199, Short.MAX_VALUE))
         );
 
         jLabel3.setText("Supplier Name");
 
-        cmbSupplirName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cmbSupplirNameKeyPressed(evt);
+        lbl_Supplier.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_Supplier.setText("Supplier");
+
+        lbl_Date.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_Date.setText("Date");
+
+        tblGrn1.setBackground(new java.awt.Color(153, 255, 153));
+        tblGrn1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Cost Price", "Selling Price", "Discount (%)", "Qty", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        tblGrn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGrn1MouseClicked(evt);
+            }
+        });
+        tblGrn1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tblGrn1KeyPressed(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblGrn1);
+        tblGrn1.getColumnModel().getColumn(4).setPreferredWidth(30);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel15.setText("Grand Total");
+
+        txt_GrandTot.setEditable(false);
+        txt_GrandTot.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbSupplirName, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
+                        .addComponent(lbl_Supplier, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(lbl_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_GrandTot, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(cmbSupplirName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(lbl_Supplier)
+                    .addComponent(lbl_Date)
+                    .addComponent(jLabel15)
+                    .addComponent(txt_GrandTot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -398,14 +497,11 @@ public class GrnReturn extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -414,33 +510,6 @@ public class GrnReturn extends javax.swing.JFrame {
 
     private void txtItemNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtItemNameKeyPressed
         if (evt.getKeyCode() == 10) {
-
-            if (!txtItemName.getText().isEmpty()) {
-
-
-
-                try {
-                    ResultSet rs = model.db.fetch("SELECT\n"
-                            + "items.id,\n"
-                            + "items.`name`,\n"
-                            + "items.cost,\n"
-                            + "items.sell,\n"
-                            + "items.`status`\n"
-                            + "FROM\n"
-                            + "items\n"
-                            + "WHERE\n"
-                            + "items.`name` like '%" + txtItemName.getText() + "%' and status='0'");
-
-                    while (rs.next()) {
-                        txtItemId.setText("" + rs.getInt(1));
-                        txtCostPrice.setText("" + rs.getDouble(3));
-                        txtSellingPrice.setText("" + rs.getDouble(4));
-                        txtCostPrice.grabFocus();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         } else if (evt.getKeyCode() == 113) {
             if (!txtTotal.getText().isEmpty() && !txtTotal.getText().equals("0.0")) {
                 txtDiscountFinal.grabFocus();
@@ -448,42 +517,6 @@ public class GrnReturn extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtItemNameKeyPressed
-
-    private void cmbItemNameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbItemNameItemStateChanged
-        try {
-            ResultSet rs = model.db.fetch("SELECT\n"
-                    + "items.id,\n"
-                    + "items.`name`,\n"
-                    + "items.cost,\n"
-                    + "items.sell,\n"
-                    + "items.`status`\n"
-                    + "FROM\n"
-                    + "items\n"
-                    + "WHERE\n"
-                    + "items.`name` = '" + cmbItemName.getSelectedItem() + "'");
-            while (rs.next()) {
-                txtItemId.setText("" + rs.getInt(1));
-                txtItemName.setText(rs.getString(2));
-                txtCostPrice.setText("" + rs.getDouble(3));
-                txtSellingPrice.setText("" + rs.getDouble(4));
-                txtCostPrice.grabFocus();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }//GEN-LAST:event_cmbItemNameItemStateChanged
-
-    private void cmbSupplirNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbSupplirNameKeyPressed
-        if (evt.getKeyCode() == 10) {
-
-            if (cmbSupplirName.getSelectedIndex() != 0) {
-                txtItemName.grabFocus();
-
-            }
-
-        }
-    }//GEN-LAST:event_cmbSupplirNameKeyPressed
 
     private void txtItemNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemNameActionPerformed
         // TODO add your handling code here:
@@ -505,8 +538,21 @@ public class GrnReturn extends javax.swing.JFrame {
 
     private void txtQtyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyPressed
         if (evt.getKeyCode() == 10) {
-            txtDiscount.grabFocus();
-            txtDiscount.selectAll();
+            double qty = Double.parseDouble(txtQty.getText());
+            double avqty = Double.parseDouble(lbl_RemQty.getText());
+
+            if (qty > avqty) {
+                Messages.warningjoption("Remaining Qty is Over ! Please Check !");
+                txtQty.grabFocus();
+                txtQty.selectAll();
+            } else {
+
+
+                txtDiscount.grabFocus();
+                txtDiscount.selectAll();
+
+            }
+
         }
     }//GEN-LAST:event_txtQtyKeyPressed
 
@@ -514,45 +560,40 @@ public class GrnReturn extends javax.swing.JFrame {
 
         if (evt.getKeyCode() == 10) {
 
-            if (!txtItemId.getText().isEmpty() && !txtQty.getText().isEmpty() && !txtDiscount.getText().isEmpty()) {
+            if (!txtQty.getText().isEmpty() && !txtDiscount.getText().isEmpty()) {
 
-//                if (isItemAvailable()) {
-//                    JOptionPane.showMessageDialog(null, "This Item is Already Exist ! ");
-//                } else {
+
                 if (!txtQty.getText().equals("0") && !txtQty.getText().equals("0.0")) {
-                    addtable();
 
+                    if (isItemAvailable()) {
+                        JOptionPane.showMessageDialog(null, "This Item is Already Exist ! ");
+                        Clear();
+                    } else {
+                        AddReturnToTable();
+                    }
                 }
 
-                //}
-                clear(0);
+
+
             }
 
         }
     }//GEN-LAST:event_txtDiscountKeyPressed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        if (tblGrn1.getRowCount() != 0 && !txtGrandTotal.getText().isEmpty() && !txtDiscountFinal.getText().isEmpty()) {
+            SaveGRN();
 
-//        if (!txtGrnId.getText().isEmpty() && cmbSupplirName.getSelectedIndex() != 0) {
-//
-//            if (isNotIDAlreadyExistInDB()) {
-//                SaveGRN();
-//            }
-//
-//
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Error Occur , Please Check GrnID / SupplirName ! ");
-//        }
-
-        // TODO add your handling code here:
+        } else {
+            JOptionPane.showMessageDialog(null, "Error Occur , Please Your Returns ! ");
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void tblGrnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblGrnKeyPressed
-        if (tblGrn.getRowCount() != 0) {
-            if (evt.getKeyCode() == 127) {
-                DeleteTableItem();
-            } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                EditDataSelectedRow();
+        if (evt.getKeyCode() == 113) {
+            if (tblGrn1.getRowCount() != 0) {
+                txtDiscountFinal.grabFocus();
+
             }
         }
         // TODO add your handling code here:
@@ -578,8 +619,7 @@ public class GrnReturn extends javax.swing.JFrame {
                 txtGrandTotal.setText("0.0");
             }
 
-        }
-        // TODO add your handling code here:
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_txtDiscountFinalKeyReleased
 
     private void txtDiscountFinalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiscountFinalKeyPressed
@@ -590,31 +630,66 @@ public class GrnReturn extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Error Occur , Please Check !");
             }
-        }
-        // TODO add your handling code here:
+        } // TODO add your handling code here:
     }//GEN-LAST:event_txtDiscountFinalKeyPressed
 
     private void tblGrnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGrnMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tblGrn.getRowCount() != 0) {
+                AddItemtoFeilds();
+            }
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_tblGrnMouseClicked
 
     private void btnSubmitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSubmitKeyPressed
-//        if (evt.getKeyCode() == 10) {
-//
-//
-//            if (!txtGrnId.getText().isEmpty() && cmbSupplirName.getSelectedIndex() != 0) {
-//                if (isNotIDAlreadyExistInDB()) {
-//                    SaveGRN();
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Error Occur , Please Check GrnID / SupplirName ! ");
-//            }
-//        }// TODO add your handling code here:
+        if (evt.getKeyCode() == 10) {
+             if (tblGrn1.getRowCount()!=0 && !txtGrandTotal.getText().isEmpty() && !txtDiscountFinal.getText().isEmpty()) {
+                      SaveGRN();
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "Error Occur , Please Your Returns ! ");
+            }
+        }// TODO add your handling code here:
     }//GEN-LAST:event_btnSubmitKeyPressed
 
     private void txtItemIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtItemIdActionPerformed
+
+    private void tblGrn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGrn1MouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tblGrn1.getRowCount() != 0) {
+                SetDataToFeilds();
+            }
+
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblGrn1MouseClicked
+
+    private void tblGrn1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblGrn1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblGrn1KeyPressed
+
+    private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
+        Clear();  // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmit1ActionPerformed
+
+    private void btnSubmit1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSubmit1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmit1KeyPressed
+
+    private void btnSubmit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit2ActionPerformed
+        ClearAll();    // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmit2ActionPerformed
+
+    private void btnSubmit2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSubmit2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmit2KeyPressed
+
+    private void tblGrnKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblGrnKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblGrnKeyReleased
 
     /**
      * @param args the command line arguments
@@ -652,13 +727,14 @@ public class GrnReturn extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
-    private javax.swing.JComboBox cmbItemName;
-    private javax.swing.JComboBox cmbSupplirName;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton btnSubmit1;
+    private javax.swing.JButton btnSubmit2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -671,8 +747,13 @@ public class GrnReturn extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDis;
+    private javax.swing.JLabel lbl_Date;
+    private javax.swing.JLabel lbl_RemQty;
+    private javax.swing.JLabel lbl_Supplier;
     private javax.swing.JTable tblGrn;
+    private javax.swing.JTable tblGrn1;
     private javax.swing.JTextField txtCostPrice;
     private javax.swing.JTextField txtDiscount;
     private javax.swing.JTextField txtDiscountFinal;
@@ -682,123 +763,75 @@ public class GrnReturn extends javax.swing.JFrame {
     private javax.swing.JTextField txtQty;
     private javax.swing.JTextField txtSellingPrice;
     private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txt_GrandTot;
     // End of variables declaration//GEN-END:variables
 
-    private void loadSupplierName() {
-        DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmbSupplirName.getModel();
-        dcbm.removeAllElements();
+    private void FirstLoad() {
+
+        LoadAllData();
+
+    }
+
+    private void LoadAllData() {
+
+
+        DefaultTableModel tb = (DefaultTableModel) tblGrn.getModel();
+        tb.setRowCount(0);
+
 
         try {
-            dcbm.addElement("--Select--");
+
             ResultSet rs = model.db.fetch("SELECT\n"
+                    + "grn.items_id,\n"
+                    + "items.`name`,\n"
+                    + "grn.cost,\n"
+                    + "grn.sell,\n"
+                    + "grn.doscount,\n"
+                    + "grn.qty,\n"
+                    + "grnreg.date,\n"
+                    + "grnreg.total,\n"
                     + "supplier.`name`\n"
                     + "FROM\n"
+                    + "grnreg ,\n"
+                    + "grn ,\n"
+                    + "items ,\n"
                     + "supplier\n"
                     + "WHERE\n"
-                    + "supplier.`status` = '0'");
+                    + "\n"
+                    + "grn.items_id = items.id AND\n"
+                    + "grn.grnreg_id = grnreg.id AND\n"
+                    + "grnreg.supplier_id = supplier.id AND\n"
+                    + "grnreg.id ='" + invoiceid + "' ");
 
             while (rs.next()) {
-                dcbm.addElement(rs.getString(1));
+                String id = rs.getString(1);
+                String name = rs.getString(2);
+                double cost = Double.parseDouble(rs.getString(3));
+                String sell = rs.getString(4);
+                double disc = Double.parseDouble(rs.getString(5));
+                disc = CheckReturnAvailableIndiscount(id);
 
+                double qty = Double.parseDouble(rs.getString(6)) - CheckReturnAvailableInQty(id);
+                lbl_Date.setText(rs.getString(7));
+                double grandtot = Double.parseDouble(rs.getString(8));
+                double total = CalMaster.DiscountPrecent(disc, cost) * qty;
+
+                lbl_Supplier.setText(rs.getString(9));
+
+                Object arr[] = {id, name, cost, sell, disc, qty, total};
+                tb.addRow(arr);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void today() {
-        Date datenow = new Date();
+            CalAllTableItemsTot();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        StringBuilder sb = new StringBuilder(sdf.format(datenow));
-        jDateChooser1.setDate(datenow);
-      //  txtGrnId.grabFocus();
-
-    }
-
-    private void loadItemId() {
-//        DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmbItemID.getModel();
-//        try {
-//            dcbm.addElement("--Select--");
-//            ResultSet rs = model.db.fetch("SELECT\n"
-//                    + "items.id\n"
-//                    + "FROM\n"
-//                    + "items");
-//            while (rs.next()) {
-//
-//                dcbm.addElement(rs.getInt(1));
-//            }
-//        } catch (Exception e) {
-//        }
-    }
-
-    private void loaditemName() {
-        DefaultComboBoxModel dcbm = (DefaultComboBoxModel) cmbItemName.getModel();
-        dcbm.removeAllElements();
-
-        try {
-            dcbm.addElement("--All Items--");
-            ResultSet rs = model.db.fetch("SELECT\n"
-                    + "items.`name`\n"
-                    + "FROM\n"
-                    + "items\n"
-                    + "WHERE\n"
-                    + "items.`status` = '0'");
-            while (rs.next()) {
-
-                dcbm.addElement(rs.getString(1));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        List<String> li = new ArrayList<String>();
-
-        try {
-            ResultSet rs = model.db.fetch("SELECT\n"
-                    + "items.`name`\n"
-                    + "FROM\n"
-                    + "items\n"
-                    + "WHERE\n"
-                    + "items.`status` = '0'");
-            while (rs.next()) {
-                li.add(rs.getString(1));
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        AutoCompleteDecorator.decorate(txtItemName, li, true);
-    }
-
-    private void addtable() {
-        DefaultTableModel dtm = (DefaultTableModel) tblGrn.getModel();
-
-        int itemid = Integer.parseInt(txtItemId.getText());
-        String name = txtItemName.getText();
-        double cost = Double.parseDouble(txtCostPrice.getText());
-        double sell = Double.parseDouble(txtSellingPrice.getText());
-        double qty = Double.parseDouble(txtQty.getText());
-        double discount = Double.parseDouble(txtDiscount.getText());
-        double total = Double.parseDouble("" + CalMaster.DiscountPrecent(discount, cost) * qty);
-
-        Object arr[] = {itemid, name, cost, sell, discount, qty, total};
-        dtm.addRow(arr);
-
-        double amounttot = 0.0; // get amout of table content
-
-        for (int i = 0; i < tblGrn.getRowCount(); i++) {
-
-            amounttot += Double.parseDouble(tblGrn.getValueAt(i, 6).toString());
-            txtTotal.setText("" + amounttot);
-        }
-
 
     }
 
-    public void clear(int a) {
-
+    private void Clear() {
         txtItemId.setText(null);
         txtItemName.setText(null);
         txtCostPrice.setText(null);
@@ -806,24 +839,131 @@ public class GrnReturn extends javax.swing.JFrame {
         txtQty.setText("0.0");
         txtDiscount.setText("0.0");
         lblDis.setText("0.0");
-        loaditemName();
+        tblGrn.grabFocus();
+    }
 
-        if (a == 1) { // clear all
+    private void ClearAll() {
+        Clear();
+        DefaultTableModel tb = (DefaultTableModel) tblGrn1.getModel();
+        tb.setRowCount(0);
+        txtGrandTotal.setText(null);
+        txtDiscountFinal.setText(null);
+        txtTotal.setText(null);
+        LoadAllData();
+        tblGrn.grabFocus();
 
-            txtTotal.setText("0.0");
-            txtDiscountFinal.setText("0.0");
-            txtGrandTotal.setText("0.0");
-          //  txtGrnId.setText(null);
-            loadSupplierName();
-            today();
-          //  txtGrnId.grabFocus();
-            DefaultTableModel dtm = (DefaultTableModel) tblGrn.getModel();
-            dtm.setRowCount(0);
+    }
 
-        } else {
+    private void AddItemtoFeilds() {
+        double d = Double.parseDouble(tblGrn.getValueAt(tblGrn.getSelectedRow(), 5).toString());
 
-            txtItemName.grabFocus();
+
+        if (d > 0) {
+            txtItemId.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 0).toString());
+            txtItemName.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 1).toString());
+            txtCostPrice.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 2).toString());
+            txtSellingPrice.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 3).toString());
+            lbl_RemQty.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 5).toString());
+            lblDis.setText(tblGrn.getValueAt(tblGrn.getSelectedRow(), 4).toString());
+            txtQty.grabFocus();
         }
+
+
+        txtQty.grabFocus();
+        txtQty.selectAll();
+
+    }
+
+    private void CalAllTableItemsTot() {
+        try {
+
+            double amounttot = 0.0; // get amout of table content
+
+            for (int i = 0; i < tblGrn.getRowCount(); i++) {
+                amounttot += Double.parseDouble(tblGrn.getValueAt(i, 6).toString());
+                txt_GrandTot.setText("" + amounttot);
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private double CheckReturnAvailableInQty(String id) { // item id
+
+        double d = 0.0;
+
+
+        try {
+
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "ret_grn.qty\n"
+                    + "\n"
+                    + "FROM\n"
+                    + "ret_grn ,\n"
+                    + "ret_grnreg ,\n"
+                    + "grnreg\n"
+                    + "WHERE\n"
+                    + "ret_grn.ret_grnreg_id = ret_grnreg.id AND\n"
+                    + "ret_grnreg.grnreg_id = grnreg.id AND\n"
+                    + "grnreg.id = '" + invoiceid + "' AND\n"
+                    + "ret_grn.items_id = '" + id + "'");
+
+            if (rs.next()) {
+
+                d = Double.parseDouble(rs.getString(1));
+
+            } else {
+
+                d = 0.0;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return d;
+    }
+
+    private double CheckReturnAvailableIndiscount(String id) { //  item id
+
+        double d = 0.0;
+
+
+        try {
+
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "ret_grn.discount\n"
+                    + "\n"
+                    + "FROM\n"
+                    + "ret_grn ,\n"
+                    + "ret_grnreg ,\n"
+                    + "grnreg\n"
+                    + "WHERE\n"
+                    + "ret_grn.ret_grnreg_id = ret_grnreg.id AND\n"
+                    + "ret_grnreg.grnreg_id = grnreg.id AND\n"
+                    + "grnreg.id = '" + invoiceid + "' AND\n"
+                    + "ret_grn.items_id = '" + id + "'");
+
+            if (rs.next()) {
+
+                d = Double.parseDouble(rs.getString(1));
+
+            } else {
+
+                d = 0.0;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return d;
     }
 
     private void ViewDiscountedPrice() {
@@ -838,49 +978,104 @@ public class GrnReturn extends javax.swing.JFrame {
 
 
         } catch (Exception e) {
-            System.out.println("ViewDiscountedPrice  " + e);
+            e.printStackTrace();
         }
     }
 
-    private void DeleteTableItem() {
-        if (tblGrn.getRowCount() != 0) {
+    private void AddReturnToTable() {
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) tblGrn1.getModel();
 
-            DefaultTableModel tbl = (DefaultTableModel) tblGrn.getModel();
-            tbl.removeRow(tblGrn.getSelectedRow());
+            String itemid = txtItemId.getText();
+            String itemname = txtItemName.getText();
+            // String batch = txt_Batch.getText();
 
-            double amounttot = 0.0;
+            double cost = Double.parseDouble(txtCostPrice.getText());
+            double sell = Double.parseDouble(txtSellingPrice.getText());
+            double discount = Double.parseDouble(txtDiscount.getText());
 
-            for (int i = 0; i < tblGrn.getRowCount(); i++) {
+            double qty = Double.parseDouble(txtQty.getText());
+            double total = CalMaster.DiscountPrecent(discount, cost) * qty;
 
-                amounttot += Double.parseDouble(tblGrn.getValueAt(i, 6).toString());
+
+
+            Object arr[] = {itemid, itemname, cost, sell, discount, qty, total};
+            dtm.addRow(arr);
+
+            LoadFinalTotals();
+            Clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void LoadFinalTotals() {
+        try {
+            double amounttot = 0.0; // get amout of table content
+
+            for (int i = 0; i < tblGrn1.getRowCount(); i++) {
+                amounttot += Double.parseDouble(tblGrn1.getValueAt(i, 6).toString());
                 txtTotal.setText("" + amounttot);
             }
 
-            if (tblGrn.getRowCount() == 0) {
+            if (tblGrn1.getRowCount() == 0) {
                 txtTotal.setText("0.0");
+                txtDiscountFinal.setText("0.0");
+                txtGrandTotal.setText("0.0");
             }
 
-            txtItemName.grabFocus();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-//    private boolean isItemAvailable() {
-//
-//        boolean bol = false;
-//
-//        String itemid = txtItemId.getText();
-//
-//        for (int i = 0; i < tblGrn.getRowCount(); i++) {
-//
-//            String value = tblGrn.getValueAt(i, 0).toString();
-//            if (itemid.equals(value)) {
-//                bol = true;
-//                break;
-//            }
-//
-//        }
-//        return bol;
-//    }
+    private void SetDataToFeilds() {
+
+
+        double d = Double.parseDouble(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 5).toString());
+
+
+        if (d > 0) {
+            txtItemId.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 0).toString());
+            txtItemName.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 1).toString());
+            txtCostPrice.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 2).toString());
+            txtSellingPrice.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 3).toString());
+            lbl_RemQty.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 5).toString());
+            txtQty.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 5).toString());
+            lblDis.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 4).toString());
+            txtDiscount.setText(tblGrn1.getValueAt(tblGrn1.getSelectedRow(), 4).toString());
+            txtQty.grabFocus();
+        }
+        DefaultTableModel dtm = (DefaultTableModel) tblGrn1.getModel();
+        dtm.removeRow(tblGrn1.getSelectedRow());
+
+
+        txtQty.grabFocus();
+        txtQty.selectAll();
+        LoadFinalTotals();
+    }
+
+    private boolean isItemAvailable() {
+
+        boolean bol = false;
+
+        String itemid = txtItemId.getText();
+
+        for (int i = 0; i < tblGrn1.getRowCount(); i++) {
+
+            String value = tblGrn1.getValueAt(i, 0).toString();
+            if (itemid.equals(value)) {
+                bol = true;
+                break;
+            }
+
+        }
+        return bol;
+    }
+
     private void TotalDiscount() {
         try {
             double price = Double.parseDouble(txtTotal.getText());
@@ -892,121 +1087,71 @@ public class GrnReturn extends javax.swing.JFrame {
         }
     }
 
-    private void EditDataSelectedRow() {
-        try {
-            double cost = Double.parseDouble(tblGrn.getValueAt(tblGrn.getSelectedRow(), 2).toString());
-            double qty = Double.parseDouble(tblGrn.getValueAt(tblGrn.getSelectedRow(), 5).toString());
-            double discount = Double.parseDouble(tblGrn.getValueAt(tblGrn.getSelectedRow(), 4).toString());
-            double total = Double.parseDouble("" + CalMaster.DiscountPrecent(discount, cost) * qty);
-
-            tblGrn.setValueAt(total, tblGrn.getSelectedRow(), 6);
-
-            double amounttot = 0.0; // get amout of table content
-
-            for (int i = 0; i < tblGrn.getRowCount(); i++) {
-                amounttot += Double.parseDouble(tblGrn.getValueAt(i, 6).toString());
-                txtTotal.setText("" + amounttot);
-            }
-            txtItemName.grabFocus();
-
-        } catch (Exception e) {
-            System.out.println("EditDataSelectedRow  " + e);
-        }
-    }
-
     private void SaveGRN() {
 
-//        if (tblGrn.getRowCount() != 0 && !txtGrandTotal.getText().isEmpty()) {
-//
-//
-//
-//            String grn_id = txtGrnId.getText();
-//
-//            int supplier_id = 0;
-//            try {
-//                ResultSet rs = model.db.fetch("select * from  supplier where name='" + cmbSupplirName.getSelectedItem() + "'");
-//                if (rs.next()) {
-//
-//                    supplier_id = Integer.parseInt(rs.getString("id"));
-//                    System.out.println(supplier_id);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            System.out.println(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(jDateChooser1.getDate()));
-//            try {
-//
-//
-//
-//                db.change("insert into grnreg(id,date,total,discount,grand_total,supplier_id,user_name) "
-//                        + "values('" + grn_id.trim() + "','" + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(jDateChooser1.getDate()) + "'," + txtTotal.getText().trim() + "," + txtDiscountFinal.getText().trim() + "," + txtGrandTotal.getText().trim() + "," + supplier_id + ",'" + userstatus.LodUser.trim() + "')");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//            try {
-//
-//                for (int i = 0; i < tblGrn.getRowCount(); i++) {
-//
-//
-//                    double cost = Double.parseDouble(tblGrn.getValueAt(i, 2).toString());
-//                    double sell = Double.parseDouble(tblGrn.getValueAt(i, 3).toString());
-//                    double qty = Double.parseDouble(tblGrn.getValueAt(i, 5).toString());
-//                    double discount = Double.parseDouble(tblGrn.getValueAt(i, 4).toString());
-//
-//                    int itemid = Integer.parseInt(tblGrn.getValueAt(i, 0).toString());
-//
-//                    db.change("insert into grn(cost,sell,qty,doscount,grnreg_id,items_id) "
-//                            + "values('" + cost + "','" + sell + "','" + qty + "','" + discount + "','" + grn_id + "','" + itemid + "')");
-//                    
-//                    // batch item
-//                     db.change("insert into batch_item(qty,rem_qty,grn_grnreg_id,grn_items_id) "
-//                            + "values('" + qty + "','" + qty + "','" + grn_id + "','" + itemid + "')");
-//
-//                    
-//                }
-//
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            Messages.datasaved();
-//            clear(1);
-//        }
+        String retgrnid = GetID();
+        try {
 
+
+
+            db.change("insert into ret_grnreg(id,date,total,discount,grand_total,grnreg_id,user_name,status) "
+                    + "values('" + retgrnid + "','" + com.MyDateTimes.TodayDateTimeNow() + "'," + txtTotal.getText().trim() + "," + txtDiscountFinal.getText().trim() + "," + txtGrandTotal.getText().trim() + "," + invoiceid + ",'" + userstatus.LodUser.trim() + "','0')");// status pass 0 = active
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+
+            for (int i = 0; i < tblGrn1.getRowCount(); i++) {
+
+
+                double cost = Double.parseDouble(tblGrn1.getValueAt(i, 2).toString());
+                double sell = Double.parseDouble(tblGrn1.getValueAt(i, 3).toString());
+                double qty = Double.parseDouble(tblGrn1.getValueAt(i, 5).toString());
+                double discount = Double.parseDouble(tblGrn1.getValueAt(i, 4).toString());
+
+                int itemid = Integer.parseInt(tblGrn1.getValueAt(i, 0).toString());
+
+
+
+                db.change("insert into ret_grn(cost,sell,qty,discount,ret_grnreg_id,items_id) "
+                        + "values('" + cost + "','" + sell + "','" + qty + "','" + discount + "','" + retgrnid + "','" + itemid + "')");
+
+                // batch item
+
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Messages.datasaved();
+        ClearAll();
     }
 
-    private void FirstLoad() {
-        loadSupplierName();
-        today();
-        loadItemId();
-        loaditemName();
+    private String GetID() {
+
+        String id = "1";
+        try {
+            ResultSet rs = model.db.fetch("select max(id) from ret_grnreg");
+
+            if (rs.next()) {
+
+                if (rs.getString(1) != null) {
+                    int num = Integer.parseInt(rs.getString(1));
+                    num++;
+                    id = "" + num;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
 
     }
-
- //   private boolean isNotIDAlreadyExistInDB() {
-
-//        boolean bol = true;
-//        try {
-//            ResultSet rs = model.db.fetch("SELECT\n"
-//                    + "grnreg.id\n"
-//                    + "FROM\n"
-//                    + "grnreg\n"
-//                    + "WHERE\n"
-//                    + "grnreg.id = '"+txtGrnId.getText()+"'");
-//            if (rs.next()) {
-//                bol = false;
-//                Messages.errorjoption("This GRN No Already Exist ! ");
-////                txtGrnId.grabFocus();
-////                txtGrnId.selectAll();
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return bol;
-   }
+}

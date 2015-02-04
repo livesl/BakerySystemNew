@@ -4,17 +4,33 @@
  */
 package viewer;
 
+import com.Messages;
+import com.userstatus;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import model.db;
+
 /**
  *
  * @author LasithaRanawaka
  */
 public class StockTransferReturn extends javax.swing.JFrame {
 
+    int invoiceid = 0;
+
     /**
      * Creates new form login
      */
     public StockTransferReturn() {
         initComponents();
+    }
+
+    public StockTransferReturn(int id) {
+        this.invoiceid = id;
+        initComponents();
+        FirstLoad();
     }
 
     /**
@@ -29,28 +45,37 @@ public class StockTransferReturn extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        txt_Total = new javax.swing.JTextField();
+        lbl_Date = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txt_ID = new javax.swing.JTextField();
+        txt_ItemName = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        txt_CostPrice = new javax.swing.JTextField();
+        txt_SellPrice = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txt_Qty = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        txt_Batch = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        lbl_RemQty = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_STReturn = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_STReturn1 = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        btn_SubmitAll = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txt_Total1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Sock Entry");
+        setTitle("Stock Transfer Return");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 204));
 
@@ -62,7 +87,11 @@ public class StockTransferReturn extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Total");
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_Total.setEditable(false);
+        txt_Total.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        lbl_Date.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_Date.setText("Date");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -72,67 +101,72 @@ public class StockTransferReturn extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(538, 538, 538)
+                .addComponent(lbl_Date, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(431, 431, 431)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addComponent(txt_Total, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(lbl_Date))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(txt_Total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "null", "null"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel5.setText("Item ID");
 
+        txt_ID.setEditable(false);
+
+        txt_ItemName.setEditable(false);
+
         jLabel6.setText("Item Name");
 
         jLabel7.setText("Cost Price");
+
+        txt_CostPrice.setEditable(false);
+
+        txt_SellPrice.setEditable(false);
 
         jLabel8.setText("Sell Price");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel9.setText("Qty");
 
-        jTextField7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setText("Submit");
+        txt_Qty.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txt_Qty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_QtyKeyPressed(evt);
+            }
+        });
 
         jLabel10.setText("Batch ID");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txt_Batch.setEditable(false);
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton1.setText("Clear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Rem.Qty");
+
+        lbl_RemQty.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbl_RemQty.setText("0.0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -141,14 +175,12 @@ public class StockTransferReturn extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(32, 32, 32)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_CostPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -156,44 +188,174 @@ public class StockTransferReturn extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_ItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel10))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_SellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(96, 96, 96)
                         .addComponent(jLabel9)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField7)
-                    .addComponent(jComboBox2, 0, 79, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(txt_Qty, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                    .addComponent(txt_Batch))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_RemQty, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txt_ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(txt_ItemName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(txt_Batch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(txt_CostPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_SellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(txt_Qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(lbl_RemQty)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton1)))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        tbl_STReturn.setBackground(new java.awt.Color(153, 204, 255));
+        tbl_STReturn.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Batch ID", "Cost Price", "Sell Price", "Qty", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_STReturn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_STReturnMouseClicked(evt);
+            }
+        });
+        tbl_STReturn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbl_STReturnKeyPressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbl_STReturn);
+
+        tbl_STReturn1.setBackground(new java.awt.Color(153, 255, 153));
+        tbl_STReturn1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Batch ID", "Cost Price", "Sell Price", "Qty", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_STReturn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_STReturn1MouseClicked(evt);
+            }
+        });
+        tbl_STReturn1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbl_STReturn1KeyPressed(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_STReturn1);
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        btn_SubmitAll.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btn_SubmitAll.setText("Submit All");
+        btn_SubmitAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SubmitAllActionPerformed(evt);
+            }
+        });
+        btn_SubmitAll.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_SubmitAllKeyPressed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton2.setText("Clear All");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Total");
+
+        txt_Total1.setEditable(false);
+        txt_Total1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txt_Total1.setText("0.0");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_Total1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_SubmitAll, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_SubmitAll, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(txt_Total1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -203,38 +365,112 @@ public class StockTransferReturn extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 864, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tbl_STReturnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_STReturnKeyPressed
+    }//GEN-LAST:event_tbl_STReturnKeyPressed
+
+    private void tbl_STReturnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_STReturnMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tbl_STReturn.getRowCount() != 0) {
+                LoadSelectedData();
+            }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_STReturnMouseClicked
+
+    private void tbl_STReturn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_STReturn1MouseClicked
+        if (tbl_STReturn1.getRowCount() != 0) {
+            LoadSelectedDataFromReturn();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_STReturn1MouseClicked
+
+    private void tbl_STReturn1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbl_STReturn1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_STReturn1KeyPressed
+
+    private void txt_QtyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_QtyKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (!txt_Qty.getText().isEmpty()) {
+
+                double qty = Double.parseDouble(txt_Qty.getText());
+                double avqty = Double.parseDouble(lbl_RemQty.getText());
+
+                if (qty > avqty) {
+                    Messages.warningjoption("Remaining Qty is Over ! Please Check !");
+                    txt_Qty.grabFocus();
+                    txt_Qty.selectAll();
+                } else {
+
+                    AddItemToReturnTable();
+
+                }
+
+            }
+        }
+    }//GEN-LAST:event_txt_QtyKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Clear();    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ClearAll();     // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btn_SubmitAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SubmitAllActionPerformed
+        if (tbl_STReturn1.getRowCount() != 0 && !txt_Total1.getText().equals("0.0") && !txt_Total1.getText().isEmpty()) {
+            SaveReturns();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_SubmitAllActionPerformed
+
+    private void btn_SubmitAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_SubmitAllKeyPressed
+        if (evt.getKeyCode()==10) {
+              if (tbl_STReturn1.getRowCount() != 0 && !txt_Total1.getText().equals("0.0") && !txt_Total1.getText().isEmpty()) {
+            SaveReturns();
+        }
+        }
+  // TODO add your handling code here:
+    }//GEN-LAST:event_btn_SubmitAllKeyPressed
 
     /**
      * @param args the command line arguments
@@ -271,12 +507,14 @@ public class StockTransferReturn extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_SubmitAll;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -285,13 +523,349 @@ public class StockTransferReturn extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lbl_Date;
+    private javax.swing.JLabel lbl_RemQty;
+    private javax.swing.JTable tbl_STReturn;
+    private javax.swing.JTable tbl_STReturn1;
+    private javax.swing.JTextField txt_Batch;
+    private javax.swing.JTextField txt_CostPrice;
+    private javax.swing.JTextField txt_ID;
+    private javax.swing.JTextField txt_ItemName;
+    private javax.swing.JTextField txt_Qty;
+    private javax.swing.JTextField txt_SellPrice;
+    private javax.swing.JTextField txt_Total;
+    private javax.swing.JTextField txt_Total1;
     // End of variables declaration//GEN-END:variables
+
+    private void FirstLoad() {
+        LoadAllData();
+    }
+
+    private void LoadAllData() {
+
+        try {
+
+            if (invoiceid != 0) {
+                DefaultTableModel dtm = (DefaultTableModel) tbl_STReturn.getModel();
+                dtm.setRowCount(0);
+
+                try {
+
+                    ResultSet rs = model.db.fetch("SELECT\n"
+                            + "stock_transfer.batch_item_grn_items_id,\n"
+                            + "items.`name`,\n"
+                            + "stock_transfer.batch_item_id,\n"
+                            + "stock_transfer.cost,\n"
+                            + "stock_transfer.sell,\n"
+                            + "stock_transfer.qty,\n"
+                            + "stock_transfer_reg.total,\n"
+                            + "stock_transfer_reg.date\n"
+                            + "FROM\n"
+                            + "stock_transfer ,\n"
+                            + "items ,\n"
+                            + "stock_transfer_reg\n"
+                            + "WHERE\n"
+                            + "stock_transfer.batch_item_grn_items_id = items.id AND\n"
+                            + "stock_transfer.stock_transfer_reg_id = '" + invoiceid + "' AND\n"
+                            + "stock_transfer.stock_transfer_reg_id = stock_transfer_reg.id");
+
+                    while (rs.next()) {
+
+                        String itemid = rs.getString(1);
+                        String itemname = rs.getString(2);
+                        String batch = rs.getString(3);
+
+                        double cost = Double.parseDouble(rs.getString(4));
+                        double sell = Double.parseDouble(rs.getString(5));
+
+
+
+                        double qty = Double.parseDouble(rs.getString(6)) - CheckReturnAvailable(batch);
+
+                        double total = cost * qty;
+                        lbl_Date.setText(rs.getString(8));
+
+
+                        Object arr[] = {itemid, itemname, batch, cost, sell, qty, total};
+                        dtm.addRow(arr);
+                    }
+
+                    CalAllTableItemsTot();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void CalAllTableItemsTot() {
+
+        try {
+
+            double amounttot = 0.0; // get amout of table content
+
+            for (int i = 0; i < tbl_STReturn.getRowCount(); i++) {
+                amounttot += Double.parseDouble(tbl_STReturn.getValueAt(i, 6).toString());
+                txt_Total.setText("" + amounttot);
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void LoadSelectedData() {
+
+        double d = Double.parseDouble(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 5).toString());
+
+
+        if (d > 0) {
+            txt_ID.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 0).toString());
+            txt_ItemName.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 1).toString());
+            txt_Batch.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 2).toString());
+            txt_CostPrice.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 3).toString());
+            txt_SellPrice.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 4).toString());
+            lbl_RemQty.setText(tbl_STReturn.getValueAt(tbl_STReturn.getSelectedRow(), 5).toString());
+            txt_Qty.grabFocus();
+        }
+
+
+
+    }
+
+    private void AddItemToReturnTable() { // tb1
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) tbl_STReturn1.getModel();
+
+            String itemid = txt_ID.getText();
+            String itemname = txt_ItemName.getText();
+            String batch = txt_Batch.getText();
+
+            double cost = Double.parseDouble(txt_CostPrice.getText());
+            double sell = Double.parseDouble(txt_SellPrice.getText());
+
+            double qty = Double.parseDouble(txt_Qty.getText());
+            double total = cost * qty;
+
+
+
+            Object arr[] = {itemid, itemname, batch, cost, sell, qty, total};
+            dtm.addRow(arr);
+
+            CalAllTableItemsTotAllReturn(); // return table
+            Clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void LoadSelectedDataFromReturn() { // tb1
+        txt_ID.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 0).toString());
+        txt_ItemName.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 1).toString());
+        txt_Batch.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 2).toString());
+        txt_CostPrice.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 3).toString());
+        txt_SellPrice.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 4).toString());
+        lbl_RemQty.setText(tbl_STReturn1.getValueAt(tbl_STReturn1.getSelectedRow(), 5).toString());
+        txt_Qty.grabFocus();
+
+        DefaultTableModel dtm = (DefaultTableModel) tbl_STReturn1.getModel();
+        dtm.removeRow(tbl_STReturn1.getSelectedRow());
+        CalAllTableItemsTotAllReturn();
+
+
+    }
+
+    private void CalAllTableItemsTotAllReturn() {// tb1
+
+        try {
+
+            double amounttot = 0.0; // get amout of table content
+
+            for (int i = 0; i < tbl_STReturn1.getRowCount(); i++) {
+
+                amounttot += Double.parseDouble(tbl_STReturn1.getValueAt(i, 6).toString());
+                txt_Total1.setText("" + amounttot);
+            }
+
+            if (tbl_STReturn1.getRowCount()==0) {
+                txt_Total1.setText("0.0");
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void Clear() {
+
+        txt_ID.setText(null);
+        txt_ItemName.setText(null);
+        txt_Batch.setText(null);
+        txt_CostPrice.setText(null);
+        txt_SellPrice.setText(null);
+        txt_Qty.setText(null);
+        lbl_RemQty.setText("0.0");
+        tbl_STReturn.grabFocus();
+    }
+
+    private void ClearAll() {
+        Clear();
+        DefaultTableModel dtm = (DefaultTableModel) tbl_STReturn1.getModel();
+        dtm.setRowCount(0);
+        txt_Total1.setText("0.0");
+        LoadAllData();
+        tbl_STReturn.grabFocus();
+    }
+
+    private double CheckReturnAvailable(String id) { //  check from batch id & stock transfer rg id = invoiceid
+
+        double d = 0.0;
+
+        System.out.println(invoiceid + "    inv");
+        System.out.println(id + "   btch");
+        try {
+
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "ret_stock_transfer.qty\n"
+                    + "FROM\n"
+                    + "ret_stock_transfer ,\n"
+                    + "ret_stock_transfer_reg ,\n"
+                    + "stock_transfer_reg\n"
+                    + "WHERE\n"
+                    + "ret_stock_transfer.ret_stock_transfer_reg_id = ret_stock_transfer_reg.id AND\n"
+                    + "ret_stock_transfer_reg.stock_transfer_reg_id = stock_transfer_reg.id AND\n"
+                    + "stock_transfer_reg.id ='" + invoiceid + "' AND\n"
+                    + "ret_stock_transfer.stock_transfer_batch_item_id = '" + id + "' ");
+
+            if (rs.next()) {
+                //System.out.println("awa111");
+                d = Double.parseDouble(rs.getString(1));
+
+            } else {
+
+                d = 0.0;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return d;
+    }
+
+    private void SaveReturns() {
+        try {
+
+            String stocktrancid = GetID();
+
+            try {
+
+
+
+                db.change("insert into ret_stock_transfer_reg(id,date,total,user_name,stock_transfer_reg_id) "
+                        + "values('" + stocktrancid.trim() + "','" + com.MyDateTimes.TodayDateTimeNow() + "'," + txt_Total1.getText().trim() + ",'" + userstatus.LodUser.trim() + "','" + invoiceid + "')");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            try {
+
+                for (int i = 0; i < tbl_STReturn1.getRowCount(); i++) {
+
+
+                    double cost = Double.parseDouble(tbl_STReturn1.getValueAt(i, 3).toString());
+                    double sell = Double.parseDouble(tbl_STReturn1.getValueAt(i, 4).toString());
+                    double qty = Double.parseDouble(tbl_STReturn1.getValueAt(i, 5).toString());
+                    int batch = Integer.parseInt(tbl_STReturn1.getValueAt(i, 2).toString());
+
+                    int itemid = Integer.parseInt(tbl_STReturn1.getValueAt(i, 0).toString());
+
+
+
+                    db.change("insert into ret_stock_transfer(cost,sell,qty,ret_stock_transfer_reg_id, stock_transfer_batch_item_id, stock_transfer_batch_item_grn_grnreg_id, stock_transfer_batch_item_grn_items_id) "
+                            + "values('" + cost + "','" + sell + "','" + qty + "','" + stocktrancid + "','" + batch + "','" + GetGRNRegID("" + batch) + "','" + itemid + "')");
+
+                    // batch item update increace rem qty
+                    db.change("Update batch_item set  rem_qty=rem_qty+'" + qty + "' where id='" + batch + "'");
+
+
+                }
+
+                Messages.datasaved();
+                ClearAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private int GetGRNRegID(String btchid) { // get grnreg id from batch
+
+        int id = -1;
+        try {
+
+            ResultSet rs = model.db.fetch("SELECT\n"
+                    + "batch_item.grn_grnreg_id\n"
+                    + "FROM\n"
+                    + "batch_item\n"
+                    + "WHERE\n"
+                    + "batch_item.id = '" + btchid + "'");
+
+            if (rs.next()) {
+                id = Integer.parseInt(rs.getString(1));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    private String GetID() { // return next new id
+        String id = "1";
+        try {
+            ResultSet rs = model.db.fetch("select max(id) from ret_stock_transfer_reg");
+
+            if (rs.next()) {
+
+                if (rs.getString(1) != null) {
+                    int num = Integer.parseInt(rs.getString(1));
+                    num++;
+                    id = "" + num;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return id;
+    }
 }
